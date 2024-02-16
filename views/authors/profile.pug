@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+    a.secondary(href=`/authors/edit/${author.id}`) Edit Author
+    a.secondary(href=`/authors/delete/${author.id}`) Delete Author
+    div
+        h3 Name: #{author.first_name} #{author.last_name}
+        p Date Of Birth: #{author.dob}
+    div.students
+        h4 Available Books
+        if availableBooks.length>0
+            form(action=`/authors/${author.id}/enroll` method='post')
+                select(name='book' id='book' autocomplete=off)
+                    each book in availableBooks
+                        option(value=book.id) #{book.title}
+                button.button.primary(type='submit') Enroll
+        else
+            p No remaining books are eligible
+        h4 Enrolled Books
+        if author.books.length>0
+            table.bookprofileinfo
+                thead
+                    tr
+                        th Book title
+                        th Publisher
+                        th Genre
+                        th # of Pages
+                        th Cover Image
+                        th Description
+                        th
+                tbody
+                    each book in author.books
+                        tr
+                            td
+                                a(href=`/books/profile/${book.id}`)
+                                    img(src=book.cover_image)
+                            td=book.title
+                            td=book.publisher
+                            td=book.genre
+                            td=book.pages
+                            td=book.description
+                            td
+                                a.secondary(href=`/books/profile/${book.id}`) View Book
+                                a.secondary(href=`/authors/${author.id}/removeBook/${book.id}`) Remove Book
+        else
+            p No books are assigned in this author.

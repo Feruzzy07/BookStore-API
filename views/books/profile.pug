@@ -1,0 +1,53 @@
+extends ../layout
+include ../mixins/image
+
+block content
+    h3=book.title
+    a.secondary(href=`/books/edit/${book.id}`) Edit Book
+    a.secondary(href=`/books/delete/${book.id}`) Delete Book
+    div.bookprofileinfo
+        img(src=book.cover_image)
+    table.bookprofileinfo
+        thead
+            tr
+                th Book title
+                th Publisher
+                th Genre
+                th # of Pages
+                th Description
+        tbody
+            div
+                td=book.title
+                td=book.publisher
+                td=book.genre
+                td=book.pages
+                td=book.description
+    h4 Book Authors
+    if availableAuthors.length>0
+        form(action=`/books/${book.id}/enroll/` method='post')
+            select(name='author' id='author' autocomplete=off)
+                each author in availableAuthors
+                    option(value=author.id) #{author.first_name} #{author.last_name}
+            button.button.primary(type='submit') Enroll
+    else
+        p No remaining authors are availabe to enroll in.
+    h4 Enrolled Authors
+    if book.authors.length>0
+        table
+            thead
+                tr
+                    th First
+                    th Last
+                    th DOB
+                    th
+            tbody
+                each author in book.authors
+                    tr
+                        td=author.first_name
+                        td=author.last_name
+                        td=author.dob
+                        td
+                            a.secondary(href=`/authors/profile/${author.id}`) View Author
+                            a.secondary(href=`/books/${book.id}/removeAuthor/${author.id}`) Remove Author
+    else
+        p Book has not been assigned to any author.

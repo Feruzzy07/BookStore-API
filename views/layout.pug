@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    nav
+      div.bookstore-title BookStore
+
+      div.nav-content
+        ul
+          li
+            a(href='/authors') Authors
+          li
+            a(href='/books') Books
+      div
+    div.container
+      div.content-container
+        block content
